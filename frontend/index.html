@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud ML Platform</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        textarea {
+            width: 80%;
+            height: 200px;
+            margin: 20px;
+            padding: 10px;
+            font-family: monospace;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            background: #22c55e;
+            border: none;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+            background: black;
+            padding: 15px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚀 Cloud ML Execution Platform</h1>
+
+<textarea id="code">
+print("Hello Cloud")
+</textarea>
+
+<br>
+
+<button onclick="runCode()">Run Code</button>
+<button onclick="downloadModel()">Download Model</button>
+
+<div id="output">Output will appear here...</div>
+
+<script>
+async function runCode() {
+    const code = document.getElementById("code").value;
+
+    document.getElementById("output").innerText = "Running...";
+
+    try {
+        const response = await fetch("http://localhost:8000/submit-job", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ code: code })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            document.getElementById("output").innerText = "Error:\n" + data.error;
+        } else {
+            document.getElementById("output").innerText =
+                data.output + "\n\nTime: " + data.execution_time;
+        }
+
+    } catch (err) {
+        document.getElementById("output").innerText = "Request Failed:\n" + err;
+    }
+}
+
+function downloadModel() {
+    window.open("http://localhost:8000/download-model");
+}
+</script>
+
+</body>
+</html>

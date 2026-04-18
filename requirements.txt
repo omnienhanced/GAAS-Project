@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+requests
+
+# Queue system
+celery
+redis
+
+# ML (demo)
+torch
+
+# Optional
+numpy
